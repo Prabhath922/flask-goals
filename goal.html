@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ goal.title }}</h2>
+<p>{{ goal.description }}</p>
+
+<h4>Steps to Achieve It:</h4>
+<ul>
+  {% for step in goal.steps %}
+    <li>
+      {% if step.done %}
+        ✅ <s>{{ step.text }}</s>
+      {% else %}
+        {{ step.text }} <a href="{{ url_for('complete_step', goal_id=goal_id, step_index=loop.index0) }}">[Mark as Done]</a>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+
+<form method="POST" action="{{ url_for('add_step', goal_id=goal_id) }}">
+  <input name="step" placeholder="Next step..." required>
+  <button type="submit">Add Step</button>
+</form>
+<a href="/">← Back to Goals</a>
+{% endblock %}
